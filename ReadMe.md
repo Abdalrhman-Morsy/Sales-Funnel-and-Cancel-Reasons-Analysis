@@ -18,7 +18,7 @@
 <tr>
 <td width="900">
 
-- The `Vista Real Estate Group` is a small newly founded Real Estate Marketing Agency that directly contracts with property developers to market and sell their Real Estate in Aswan city.
+- The `Vista Real Estate Group` is a newly founded Real Estate Marketing Agency that directly contracts with property developers to market and sell their Real Estate in Aswan governorate.
 
 - Since its inception six month ago building and levering a client data base of over 10,000 successfully selling 91 Commercial and Residential properties in 14 projects including Malls, Condo Buildings, and Apartment Complexes for 7 developers in many locations within the city.
 

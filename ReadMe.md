@@ -257,7 +257,7 @@
 <h3 align="center">Sales Reps</h3>
 
 <div align="center">
-<img width="900" alt="Sales rep core metrics" src="screenshots/Sales_Rep_Core_Metrics.png">
+<img width="900" alt="Sales rep core metrics" src="screenshots/sales_rep_core_metrics.png">
 </div>
 
 <table align="center">

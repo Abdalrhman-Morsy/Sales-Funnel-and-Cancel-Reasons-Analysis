@@ -356,7 +356,7 @@
   - All the price and location reasons `Price Objection`, `Invalid Lead`, `Payment Terms Mismatch`, `Location Preference` amount to 17 clients which is only 14% of the total cancellation.
 
 - Provide payment plans and suggest the Reservation with the clients that Have the financial Ability to pay but they can't commit write away.
-  - the top three reasons of cancellations are `Postponed Decision`, `Funding Issues`, and `Call Back Requested` reflect a lack of available liquidity on the side of clients and represent 57% of the total cancellations.
+  - the top three reasons of cancellations are `Postponed Decision`, `Funding Issues`, and `Call Back Requested` reflect a lack of available liquidity on the side of clients and represent 65% of the total cancellations.
 
 - Employ sales tactics like showing rarity and urgency with the clients in the `Meeting` stage.
   - there are 2 clients in the `Following after meeting` plus one in the `Meeting` stages and the clients who cancelled after going through the `Meeting` stage cancelled with reasons of `Call Back Requested` and `Casual Browsing`.

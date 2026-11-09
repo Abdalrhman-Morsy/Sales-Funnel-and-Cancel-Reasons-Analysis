@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Clients Operations Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "010e549e-b222-4be6-a4b9-9d6ef1c48a92"
+  }
+}

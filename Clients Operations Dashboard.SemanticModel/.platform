@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Clients Operations Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "a2181d8c-1cd8-401d-9a01-47528c4b26e9"
+  }
+}

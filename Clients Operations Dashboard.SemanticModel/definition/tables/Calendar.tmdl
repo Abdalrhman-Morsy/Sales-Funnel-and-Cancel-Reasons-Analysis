@@ -1,0 +1,91 @@
+table Calendar
+	lineageTag: 11f39ba9-2ac4-4199-be75-aa6a55b27cb5
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: Short Date
+		lineageTag: 9305f3f6-4599-4bee-9dcd-a1148162ca3f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		formatString: 0
+		lineageTag: c238e6f4-f478-4447-8ca3-7c376b5223b2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		lineageTag: e8b93665-9c51-4d44-99df-a2b68ea391c3
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Monthnum
+		formatString: 0
+		lineageTag: e9ac5d02-36e7-4416-bf7f-3fdcd86e1deb
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Monthnum]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Weekday
+		lineageTag: cb6ea5fe-fe0e-4100-85a7-2ed4d1d32bd9
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Weekday]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Weeknum
+		formatString: 0
+		lineageTag: fe353eb7-7255-4224-8ac3-7729e935510d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Weeknum]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Qtr
+		lineageTag: d517cd61-ef6e-432b-be72-7a72c06ca58a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Qtr]
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekType
+		lineageTag: b02971d4-acfb-4239-981f-e04159a37ea9
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [WeekType]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calendar = calculated
+		mode: import
+		source =
+				ADDCOLUMNS(
+				    CALENDARAUTO(),
+				    "Year", YEAR([Date]),
+				    "Month", FORMAT([Date],"mmm"),
+				    "Monthnum", MONTH([Date]),
+				    "Weekday", FORMAT([Date],"ddd"),
+				    "Weeknum", WEEKDAY([Date]),
+				    "Qtr", "Q-" & FORMAT([Date],"Q"),
+				    "WeekType", IF(WEEKDAY([Date])=1|| WEEKDAY([Date]) = 7, "weekend", "weekday")
+				)
+
+	annotation PBI_Id = 66c20da069e84cdcaeedffa4e1321e83
+

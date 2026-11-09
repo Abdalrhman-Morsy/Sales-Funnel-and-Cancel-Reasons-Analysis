@@ -1,0 +1,35 @@
+table dim_stage
+	lineageTag: af06a2bf-0de8-455d-aaec-39b6c38f6fb8
+
+	column stage
+		dataType: string
+		lineageTag: 74c90242-2a49-4bea-a31e-381c30569267
+		summarizeBy: none
+		sourceColumn: stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: f02fcad3-d824-437e-975a-145bf23ff33b
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_stage = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\Documents\Data Analysis\projects\sales v2\powerbi_report_.xlsx"), null, true),
+				    dim_stage_Sheet = Source{[Item="dim_stage",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(dim_stage_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"stage", type text}, {"id", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

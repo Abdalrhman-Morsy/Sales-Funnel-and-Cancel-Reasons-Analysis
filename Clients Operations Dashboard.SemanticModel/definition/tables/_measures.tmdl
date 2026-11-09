@@ -1,0 +1,430 @@
+table _measures
+	lineageTag: f23103c1-bd98-4295-ab13-f7f825397507
+
+	measure 'Total Clients' =
+			CALCULATE(
+			    DISTINCTCOUNT(fact_interactions[client_id]),
+			    dim_clients[answer_count] > 0
+			    )
+		formatString: 0
+		lineageTag: dd5a42eb-89f9-4e8d-a428-2fc62fa14311
+
+	measure 'Stage ID' = SELECTEDVALUE(dim_stage[id])
+		formatString: 0
+		lineageTag: f957d159-52b2-4f1c-b3c0-40e85d581474
+
+	measure Cancellations = ```
+			
+			VAR cancellation_id = LOOKUPVALUE(
+			    dim_stage[id], 
+			    dim_stage[stage], 
+			    "Cancellation"
+			)
+			
+			VAR clients_max_stage = CALCULATE(
+			    [Total Clients],
+			    dim_clients[last_stage_id] = cancellation_id,
+			    USERELATIONSHIP(dim_clients[max_stage_id], dim_stage[id])
+			    )
+			RETURN clients_max_stage
+			```
+		formatString: 0
+		lineageTag: 2e658006-788a-4fae-bf9f-e3a9377ed6c7
+
+	measure 'High potential' =
+			CALCULATE(
+			    [Total Clients],
+			    dim_clients[high_potential] = TRUE
+			)
+		formatString: 0
+		lineageTag: ac9329bc-f8d0-43b5-b670-6c4dcfdfbafb
+
+	measure 'Fresh Clients' =
+			CALCULATE(
+			    [Total Clients],
+			    dim_clients[fresh_cold_flag] = TRUE
+			)
+		formatString: 0
+		lineageTag: 7146fe4b-2a85-49e0-b219-043e1ff42dc5
+
+	measure 'Cold Clients' =
+			CALCULATE(
+			    [Total Clients],
+			    dim_clients[fresh_cold_flag] = FALSE
+			)
+		formatString: 0
+		lineageTag: e7f4be8f-5d6a-4294-98a0-a106958245b0
+
+	measure 'First Contact No Response' =
+			CALCULATE(
+			    [Total Clients],
+			    dim_clients[no_response_at_first_call] = TRUE,
+			    USERELATIONSHIP(dim_clients[first_contact_date], 'Calendar'[Date])
+			)
+		formatString: 0
+		lineageTag: e650f20b-32f2-417a-89e5-c142222f1eff
+
+	measure 'No Response' =
+			CALCULATE(
+			    DISTINCTCOUNT(fact_interactions[client_id]),
+			    dim_clients[answer_count] = 0
+			)
+		formatString: 0
+		lineageTag: 3b0295a9-9578-4797-89b0-5bd950765c40
+
+	measure 'First Call Cancellation' =
+			CALCULATE(
+			    [Total Clients],
+			    dim_clients[first_call_cancellations] = TRUE
+			)
+		formatString: 0
+		lineageTag: d4f92b4e-f0de-44ac-982d-517b164612a2
+
+	measure Ghosting =
+			CALCULATE(
+			    [Total Clients],
+			    dim_clients[ghosting] = TRUE
+			)
+		formatString: 0
+		lineageTag: 75ad303f-c62e-448c-9adb-0c5ca35b5ef0
+
+	measure 'Dead-end Clients' =
+			CALCULATE(
+			    [Total Clients],
+			    dim_clients[deadend_clients] = TRUE
+			)
+		formatString: 0
+		lineageTag: 6e6f4977-4676-4479-9c78-a9471b9b5904
+
+	measure 'Justified Cancellation' =
+			CALCULATE(
+			    [Total Clients],
+			    dim_clients[justified_cancellations] = TRUE
+			)
+		formatString: 0
+		lineageTag: 51e4e006-6a3a-4b8d-8ccd-4d8cfdc06be2
+
+	measure 'Mid-journey Cancellation' =
+			CALCULATE(
+			    [Total Clients],
+			    dim_clients[mid_journey_cancellations] = TRUE
+			)
+		formatString: 0
+		lineageTag: 32809470-f394-4833-bb00-f8d7503e29d7
+
+	measure 'AVG Mid-Journey Cancellation days' = ```
+			AVERAGE(dim_clients[mid_journey_cancellation_period])
+			
+			```
+		lineageTag: 8603ef37-6406-455a-af55-8f05570ac221
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Last Interaction per Stage' =
+			CALCULATE(
+			    COUNT(snapshot_interaction[channel_id])//,
+			    //USERELATIONSHIP(snapshot_interaction[stage_id], dim_stage[id])
+			)
+		formatString: 0
+		lineageTag: 53a3630c-d1c5-45ff-b906-4af81ec9d0c8
+
+	measure 'Done deal' =
+			CALCULATE(
+			    [Total Clients],
+			    dim_stage[stage] = "Done deal"
+			    )
+		formatString: 0
+		lineageTag: 5295d35f-f41f-4f94-949c-bb0fd35fd346
+
+	measure Meeting =
+			CALCULATE(
+			    [Total Clients],
+			    dim_stage[stage] = "Meeting"
+			)
+		formatString: 0
+		lineageTag: 79eeb773-0ceb-4947-b224-fa4fbeaf7104
+
+	measure Reservations =
+			CALCULATE(
+			    [Total Clients],
+			    dim_stage[stage] = "Reservation"
+			)
+		formatString: 0
+		lineageTag: d7daa138-8250-42af-a3a1-a7d03201f6f1
+
+	measure 'All Interactions' =
+			CALCULATE(
+			    COUNT(fact_interactions[id]),
+			    fact_interactions[is_synthetic] = FALSE
+			)
+		formatString: 0
+		lineageTag: 12cfe7e6-799d-476c-94e1-5e2fd135ce18
+
+	measure 'Low potential' =
+			CALCULATE(
+			    [Total Clients],
+			    dim_clients[high_potential] = False
+			)
+		formatString: 0
+		lineageTag: 5d7f00e7-70a5-4132-8906-a364cb18020b
+
+	measure 'Core Stages Percentages' =
+			
+			VAR _core_stages = {"Cancellation", "Meeting", "Reservation", "Done deal"}
+			VAR _count =
+			    CALCULATE(
+			        COUNT(fact_interactions[id]),
+			        KEEPFILTERS(dim_stage[stage] IN _core_stages)
+			    )
+			VAR _total =
+			    CALCULATE(
+			        COUNT(fact_interactions[id]),
+			        ALL(dim_stage)
+			    )
+			RETURN
+			IF(
+			    ISBLANK(_count),
+			    BLANK(),
+			    ROUND(DIVIDE(_count, _total) * 100, 1)
+			)
+		formatString: 0.0
+		lineageTag: 9b2a9477-3bac-4079-a193-c63c1d1a9cd6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Answerd Cleints' =
+			CALCULATE(
+			    [Total Clients],
+			    dim_clients[answer_count] > 0
+			)
+		formatString: 0
+		lineageTag: 7b0db8da-483b-4e79-80b5-08154e5a63d2
+
+	measure 'In Funnel Clients' = [Total Clients] - [Cancellations Sales Reps] // last stage is not cancellation "they are still in the funnel"
+		formatString: 0
+		lineageTag: 229621cd-d753-48ec-958b-1caec69ef8a0
+
+	measure 'Top 1 Cancel Reason' =
+			VAR RepClients = CALCULATETABLE(VALUES(fact_interactions[client_id]))
+			VAR t =
+			    FILTER(
+			        ADDCOLUMNS(
+			            FILTER(ALL(dim_cancel_reason[id], dim_cancel_reason[cancel_reason]), NOT ISBLANK(dim_cancel_reason[id])),
+			            "cnt", CALCULATE(DISTINCTCOUNT(dim_clients[id]), dim_clients[id] IN RepClients, NOT ISBLANK(dim_clients[cancel_reason_id]))
+			        ),
+			        [cnt] > 0
+			    )
+			VAR top1 = TOPN(1, t, [cnt], DESC, dim_cancel_reason[id], ASC)
+			RETURN MINX(top1, dim_cancel_reason[cancel_reason])
+		lineageTag: 05e75095-0f2a-43c6-9853-c55c10e200d9
+
+	measure 'Top 1 Cancel Reason Count' =
+			VAR RepClients = CALCULATETABLE(VALUES(fact_interactions[client_id]))
+			VAR t =
+			    FILTER(
+			        ADDCOLUMNS(
+			            FILTER(ALL(dim_cancel_reason[id], dim_cancel_reason[cancel_reason]), NOT ISBLANK(dim_cancel_reason[id])),
+			            "cnt", CALCULATE(DISTINCTCOUNT(dim_clients[id]), dim_clients[id] IN RepClients, NOT ISBLANK(dim_clients[cancel_reason_id]))
+			        ),
+			        [cnt] > 0
+			    )
+			VAR top1 = TOPN(1, t, [cnt], DESC, dim_cancel_reason[id], ASC)
+			RETURN MINX(top1, [cnt])
+		formatString: 0
+		lineageTag: 6a72b244-ddc9-401b-8200-002390201d20
+
+	measure 'Top 2 Cancel Reason' =
+			VAR RepClients = CALCULATETABLE(VALUES(fact_interactions[client_id]))
+			VAR t =
+			    FILTER(
+			        ADDCOLUMNS(
+			            FILTER(ALL(dim_cancel_reason[id], dim_cancel_reason[cancel_reason]), NOT ISBLANK(dim_cancel_reason[id])),
+			            "cnt", CALCULATE(DISTINCTCOUNT(dim_clients[id]), dim_clients[id] IN RepClients, NOT ISBLANK(dim_clients[cancel_reason_id]))
+			        ),
+			        [cnt] > 0
+			    )
+			VAR top1 = TOPN(1, t, [cnt], DESC, dim_cancel_reason[id], ASC)
+			VAR top2 = TOPN(2, t, [cnt], DESC, dim_cancel_reason[id], ASC)
+			VAR rank2 = EXCEPT(top2, top1)
+			RETURN MINX(rank2, dim_cancel_reason[cancel_reason])
+		lineageTag: a631f581-c411-432f-8b4c-0fae82b62610
+
+	measure 'Top 2 Cancel Reason Count' =
+			VAR RepClients = CALCULATETABLE(VALUES(fact_interactions[client_id]))
+			VAR t =
+			    FILTER(
+			        ADDCOLUMNS(
+			            FILTER(ALL(dim_cancel_reason[id], dim_cancel_reason[cancel_reason]), NOT ISBLANK(dim_cancel_reason[id])),
+			            "cnt", CALCULATE(DISTINCTCOUNT(dim_clients[id]), dim_clients[id] IN RepClients, NOT ISBLANK(dim_clients[cancel_reason_id]))
+			        ),
+			        [cnt] > 0
+			    )
+			VAR top1 = TOPN(1, t, [cnt], DESC, dim_cancel_reason[id], ASC)
+			VAR top2 = TOPN(2, t, [cnt], DESC, dim_cancel_reason[id], ASC)
+			VAR rank2 = EXCEPT(top2, top1)
+			RETURN MINX(rank2, [cnt])
+		formatString: 0
+		lineageTag: 46efdf3a-c339-4faf-be12-4242e57a9ba7
+
+	measure 'Top 3 Cancel Reason' =
+			VAR RepClients = CALCULATETABLE(VALUES(fact_interactions[client_id]))
+			VAR t =
+			    FILTER(
+			        ADDCOLUMNS(
+			            FILTER(ALL(dim_cancel_reason[id], dim_cancel_reason[cancel_reason]), NOT ISBLANK(dim_cancel_reason[id])),
+			            "cnt", CALCULATE(DISTINCTCOUNT(dim_clients[id]), dim_clients[id] IN RepClients, NOT ISBLANK(dim_clients[cancel_reason_id]))
+			        ),
+			        [cnt] > 0
+			    )
+			VAR top2 = TOPN(2, t, [cnt], DESC, dim_cancel_reason[id], ASC)
+			VAR top3 = TOPN(3, t, [cnt], DESC, dim_cancel_reason[id], ASC)
+			VAR rank3 = EXCEPT(top3, top2)
+			RETURN MINX(rank3, dim_cancel_reason[cancel_reason])
+		lineageTag: ab4fc184-e861-4ab0-a91e-96b32e802b78
+
+	measure 'Top 3 Cancel Reason Count' =
+			VAR RepClients = CALCULATETABLE(VALUES(fact_interactions[client_id]))
+			VAR t =
+			    FILTER(
+			        ADDCOLUMNS(
+			            FILTER(ALL(dim_cancel_reason[id], dim_cancel_reason[cancel_reason]), NOT ISBLANK(dim_cancel_reason[id])),
+			            "cnt", CALCULATE(DISTINCTCOUNT(dim_clients[id]), dim_clients[id] IN RepClients, NOT ISBLANK(dim_clients[cancel_reason_id]))
+			        ),
+			        [cnt] > 0
+			    )
+			VAR top2 = TOPN(2, t, [cnt], DESC, dim_cancel_reason[id], ASC)
+			VAR top3 = TOPN(3, t, [cnt], DESC, dim_cancel_reason[id], ASC)
+			VAR rank3 = EXCEPT(top3, top2)
+			RETURN MINX(rank3, [cnt])
+		formatString: 0
+		lineageTag: ac5e0359-9d33-4651-928f-0334d55f7308
+
+	measure 'Top 3 Cancel Reasons %' =
+			VAR RepClients = CALCULATETABLE(VALUES(fact_interactions[client_id]))
+			VAR t =
+			    FILTER(
+			        ADDCOLUMNS(
+			            FILTER(ALL(dim_cancel_reason[id], dim_cancel_reason[cancel_reason]), NOT ISBLANK(dim_cancel_reason[id])),
+			            "cnt", CALCULATE(DISTINCTCOUNT(dim_clients[id]), dim_clients[id] IN RepClients, NOT ISBLANK(dim_clients[cancel_reason_id]))
+			        ),
+			        [cnt] > 0
+			    )
+			VAR top3 = TOPN(3, t, [cnt], DESC, dim_cancel_reason[id], ASC)
+			VAR top3total = SUMX(top3, [cnt])
+			VAR grandtotal = SUMX(t, [cnt])
+			RETURN DIVIDE(top3total, grandtotal)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: ed750602-c78a-45ef-8e34-35dcfe174107
+
+	measure 'Total Last Stage' =
+			CALCULATE(
+			    [Total Clients],
+			    USERELATIONSHIP(dim_clients[last_stage_id], dim_stage[id])
+			)
+		formatString: 0
+		lineageTag: d7414e27-dbdf-4d9f-896d-fc98dcdbd16c
+
+	measure 'Cancellation percentage' = [Cancellations]/[Total Clients]
+		formatString: 0%;-0%;0%
+		lineageTag: 6c37be1e-592a-4e96-9c49-a3d56e5950b8
+
+	measure 'max stage per client' =
+			VAR _current_stage_id = MAX(dim_stage[id])
+			RETURN
+			CALCULATE(
+			    DISTINCTCOUNT(fact_interactions[client_id]),
+			    FILTER(
+			        VALUES(dim_clients[id]),
+			        CALCULATE(
+			            MAX(fact_interactions[stage_id]),
+			            REMOVEFILTERS(dim_stage)
+			        ) = _current_stage_id
+			    )
+			)
+		formatString: 0
+		lineageTag: da19a29a-2137-45b4-b5ed-de4122b0ac6f
+
+	measure 'Cancellations Sales Reps' = ```
+			
+			VAR cancellation_id = LOOKUPVALUE(dim_stage[id],dim_stage[stage], "Cancellation")
+			RETURN 
+			CALCULATE(
+			    [Total Clients],
+			    dim_clients[last_stage_id] = cancellation_id,
+			    USERELATIONSHIP(dim_clients[max_stage_id], dim_stage[id])
+			)
+			```
+		formatString: 0
+		lineageTag: 2afcda39-ba6d-4496-8c73-9543a078e95b
+
+	measure 'No Answer Calls' = ```
+			
+			CALCULATE(
+			    COUNT(fact_interactions[id]),
+			    fact_interactions[no_answer_flag] = TRUE
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 9ed2f60a-2a3e-4d65-ad52-d967fcc6bc42
+
+	measure 'First Contact' =
+			CALCULATE(
+			    [Total Clients],
+			    USERELATIONSHIP(dim_clients[first_contact_date], 'Calendar'[Date])
+			)
+		formatString: 0
+		lineageTag: 0c87c7af-67f7-48d1-8858-3bf76d617d6e
+
+	measure 'First Call' =
+			CALCULATE(
+			    [Total Clients],
+			    USERELATIONSHIP(dim_clients[first_call_date], 'Calendar'[Date])
+			)
+		formatString: 0
+		lineageTag: 5df913bc-b7eb-4ee3-89d2-e9d62d803682
+
+	measure 'All Leads' = DISTINCTCOUNT(fact_interactions[client_id])
+		formatString: 0
+		lineageTag: 42fef194-4908-42ff-8d6e-2120f12b534f
+
+	measure 'Droupout benchmark' = SELECTEDVALUE(dropouts_benchmark[percentage])
+		formatString: 0%;-0%;0%
+		lineageTag: fe575bea-a041-4a2e-a881-92636e7bf363
+
+	measure 'Cancellations Unfiltered Stages' = ```
+			
+			VAR cancellation_id = LOOKUPVALUE(
+			    dim_stage[id], 
+			    dim_stage[stage], 
+			    "Cancellation"
+			)
+			
+			VAR clients_max_stage = CALCULATE(
+			    [Total Clients],
+			    dim_clients[last_stage_id] = cancellation_id,
+			    USERELATIONSHIP(dim_clients[max_stage_id], dim_stage[id]),
+			    ALL(dim_stage[stage])
+			    )
+			RETURN clients_max_stage
+			```
+		formatString: 0
+		lineageTag: d1edb26b-bbd3-40c6-97b8-63d4a25bf24c
+
+	column Column
+		formatString: 0
+		lineageTag: 771ccb69-52b2-4fce-9fcc-330c9783b0ad
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _measures = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = c70e844298cf43748dd191b1834ea9f4
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

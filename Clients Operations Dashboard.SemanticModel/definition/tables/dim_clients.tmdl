@@ -1,0 +1,249 @@
+table dim_clients
+	lineageTag: c4073a27-a759-4b23-bb1f-aa5c019b0de6
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 1749a433-90cf-4cdd-be83-5fb1db5e5fc4
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column cancel_reason_id
+		dataType: int64
+		formatString: 0
+		lineageTag: acefd0ae-e366-4221-8a1b-d992bb602aa9
+		summarizeBy: none
+		sourceColumn: cancel_reason_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column fresh_cold_flag
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: e41b87e3-ae63-444f-8703-8e306ef3d66b
+		summarizeBy: none
+		sourceColumn: fresh_cold_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column local_number
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 16881d5d-0439-46e5-9e8f-bcafded2f475
+		summarizeBy: none
+		sourceColumn: local_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_stage_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 77a87ac8-1de8-4130-a842-9a8b3d3443a7
+		summarizeBy: sum
+		sourceColumn: first_stage_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_stage_date
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: ca09d3d7-76d9-4389-b514-cbf6afe17432
+		summarizeBy: none
+		sourceColumn: first_stage_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column last_stage_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 206c8721-3273-4d60-8194-536d3ceade84
+		summarizeBy: sum
+		sourceColumn: last_stage_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_stage_date
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: f6c10cc1-7468-456e-83f0-34da0f52caf5
+		summarizeBy: none
+		sourceColumn: last_stage_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column total_comments
+		dataType: int64
+		formatString: 0
+		lineageTag: b6d202d8-cc40-4dc6-b548-66055fa66910
+		summarizeBy: sum
+		sourceColumn: total_comments
+
+		annotation SummarizationSetBy = Automatic
+
+	column no_answer_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 6f59b9ec-ae54-4af3-9815-a091463cda49
+		summarizeBy: sum
+		sourceColumn: no_answer_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column answer_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 67130ea5-59c0-4782-b26d-c565cd6025e2
+		summarizeBy: sum
+		sourceColumn: answer_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column response_rate
+		dataType: double
+		lineageTag: 55e13644-89c2-423b-98af-da152fac4fce
+		summarizeBy: sum
+		sourceColumn: response_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column first_call_cancellations
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 47658e23-00d7-47d3-97f9-33bd7b75773b
+		summarizeBy: none
+		sourceColumn: first_call_cancellations
+
+		annotation SummarizationSetBy = Automatic
+
+	column no_response_at_first_call
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: a5ac29a8-e3b8-48cb-8424-b47dfa053dcc
+		summarizeBy: none
+		sourceColumn: no_response_at_first_call
+
+		annotation SummarizationSetBy = Automatic
+
+	column ghosting
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 89ffcc79-fe57-4635-aeef-7a8ee34ad539
+		summarizeBy: none
+		sourceColumn: ghosting
+
+		annotation SummarizationSetBy = Automatic
+
+	column deadend_clients
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 24c16036-2b68-4858-803c-ffd73119164a
+		summarizeBy: none
+		sourceColumn: deadend_clients
+
+		annotation SummarizationSetBy = Automatic
+
+	column mid_journey_cancellations
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b3e1c495-f3c8-4147-a54d-bc27840c47e2
+		summarizeBy: none
+		sourceColumn: mid_journey_cancellations
+
+		annotation SummarizationSetBy = Automatic
+
+	column mid_journey_cancellation_period
+		dataType: int64
+		formatString: 0
+		lineageTag: 07ba0b9c-7dfc-48ac-9a7c-27a503c43559
+		summarizeBy: sum
+		sourceColumn: mid_journey_cancellation_period
+
+		annotation SummarizationSetBy = Automatic
+
+	column justified_cancellations
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: fb87443d-085e-4308-aa8d-4c86d37d996a
+		summarizeBy: none
+		sourceColumn: justified_cancellations
+
+		annotation SummarizationSetBy = Automatic
+
+	column high_potential
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3eff365c-1dcd-4f7c-b9fa-3b942c097cd3
+		summarizeBy: none
+		sourceColumn: high_potential
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_call_date
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: b25418df-c1a7-4a10-b66b-77107465b29e
+		summarizeBy: none
+		sourceColumn: first_call_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column first_contact_date
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 1a5e2ff5-024f-4cd5-ae02-e8324058aa00
+		summarizeBy: none
+		sourceColumn: first_contact_date
+
+		annotation SummarizationSetBy = User
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column foreign_number
+		dataType: string
+		lineageTag: 8c26b824-d6e8-4fdb-9453-62658f11d550
+		summarizeBy: none
+		sourceColumn: foreign_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column max_stage_id
+		dataType: string
+		lineageTag: 9e946535-854d-43e2-9048-d256eb623ba1
+		summarizeBy: none
+		sourceColumn: max_stage_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_clients = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\Documents\Data Analysis\projects\sales v2\powerbi_report_.xlsx"), null, true),
+				    dim_clients_Sheet = Source{[Item="dim_clients",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(dim_clients_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id", Int64.Type}, {"cancel_reason_id", Int64.Type}, {"fresh_cold_flag", type logical}, {"local_number", type logical}, {"first_stage_id", Int64.Type}, {"first_stage_date", type date}, {"last_stage_id", Int64.Type}, {"last_stage_date", type date}, {"total_comments", Int64.Type}, {"no_answer_count", Int64.Type}, {"answer_count", Int64.Type}, {"response_rate", type number}, {"first_call_cancellations", type logical}, {"no_response_at_first_call", type logical}, {"ghosting", type logical}, {"deadend_clients", type logical}, {"mid_journey_cancellations", type logical}, {"mid_journey_cancellation_period", Int64.Type}, {"justified_cancellations", type logical}, {"high_potential", type logical}, {"first_call_date", type date}, {"first_contact_date", type date}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

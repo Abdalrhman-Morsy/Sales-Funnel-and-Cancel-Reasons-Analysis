@@ -1,0 +1,35 @@
+table dim_sales_rep
+	lineageTag: 958e496d-0125-4ed2-8a66-cd425f2b4029
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 211c1184-df2b-4366-8857-4309b46193bf
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column sales_rep
+		dataType: string
+		lineageTag: b7f8981d-0c8a-4e9c-ab46-4c0aee6ddb39
+		summarizeBy: none
+		sourceColumn: sales_rep
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_sales_rep = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\Documents\Data Analysis\projects\sales v2\powerbi_report_.xlsx"), null, true),
+				    dim_sales_rep_Sheet = Source{[Item="dim_sales_rep",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(dim_sales_rep_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id", Int64.Type}, {"sales_rep", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

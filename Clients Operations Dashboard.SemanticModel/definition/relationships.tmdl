@@ -1,0 +1,85 @@
+relationship a35c3048-644b-6b04-72fb-4aad329767eb
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: snapshot_interaction.id
+	toColumn: fact_interactions.id
+
+relationship 449159cb-b0f1-bc37-2dab-8da70b697689
+	fromColumn: fact_interactions.client_id
+	toColumn: dim_clients.id
+
+relationship bcb77a10-3754-5e99-76cc-70f219af9ac5
+	fromColumn: fact_interactions.channel_id
+	toColumn: dim_channel.id
+
+relationship 5290c395-b06a-650a-fdc7-93ea989b01da
+	fromColumn: fact_interactions.stage_id
+	toColumn: dim_stage.id
+
+relationship 413e55fd-4e89-feeb-7118-6a86695a659e
+	fromColumn: fact_interactions.sales_rep_id
+	toColumn: dim_sales_rep.id
+
+relationship d75a7603-6be6-bdff-3f0d-6be2d0d27d6b
+	fromColumn: fact_interactions.project_id
+	toColumn: dim_projects.id
+
+relationship ae9ccf7e-6cf8-5290-02c6-1172a1d6acfc
+	fromColumn: dim_clients.cancel_reason_id
+	toColumn: dim_cancel_reason.id
+
+relationship 6053e4de-cbb2-ce87-6204-2198bb077aa9
+	isActive: false
+	fromColumn: dim_clients.first_stage_id
+	toColumn: dim_stage.id
+
+relationship edcfe0d7-dced-f25d-f053-be0dc98d7985
+	isActive: false
+	fromColumn: dim_clients.last_stage_id
+	toColumn: dim_stage.id
+
+relationship 431e4be0-f2be-4169-af10-46fbeaf551be
+	joinOnDateBehavior: datePartOnly
+	fromColumn: snapshot_interaction.follow_date
+	toColumn: LocalDateTable_9d48adf8-01cd-44cd-be37-dd7e5b99f76a.Date
+
+relationship 0e498cc9-6861-41a2-14b4-1b0c87877961
+	fromColumn: fact_interactions.follow_date
+	toColumn: Calendar.Date
+
+relationship c06a79b7-d61a-738f-c805-bab7d0e3a422
+	isActive: false
+	fromColumn: dim_clients.first_call_date
+	toColumn: Calendar.Date
+
+relationship 16bdde6e-1709-cbb0-c952-32394f59d956
+	isActive: false
+	fromColumn: dim_clients.first_stage_date
+	toColumn: Calendar.Date
+
+relationship e4afcd0c-1e9e-34ac-6566-fe812bb22a06
+	isActive: false
+	fromColumn: dim_clients.first_contact_date
+	toColumn: Calendar.Date
+
+relationship 8066be64-bc81-ff67-e754-92256a4dc1c1
+	isActive: false
+	fromColumn: dim_clients.last_stage_date
+	toColumn: Calendar.Date
+
+relationship 17c39e19-17de-63ff-423c-4fc59e650ae5
+	isActive: false
+	fromColumn: snapshot_interaction.stage_id
+	toColumn: dim_stage.id
+
+relationship bc2f1896-91c4-9c45-6076-45512e8c1e58
+	isActive: false
+	fromColumn: dim_clients.max_stage_id
+	toColumn: dim_stage.id
+
+relationship 8f0a1a2a-0716-52d1-f2b6-fbee8bccc6b6
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: dropouts_benchmark.stage_id
+	toColumn: dim_stage.id
+

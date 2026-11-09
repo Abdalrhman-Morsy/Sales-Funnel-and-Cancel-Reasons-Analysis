@@ -1,0 +1,32 @@
+table dropouts_benchmark
+	lineageTag: 51fc44c3-5633-4c01-bbc6-bf7e79c05a1f
+
+	column stage_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e3f2695e-ff0e-45a9-a824-d1c9af4564a4
+		summarizeBy: none
+		sourceColumn: stage_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column percentage
+		dataType: double
+		formatString: 0%;-0%;0%
+		lineageTag: d95f53ec-1f25-4f90-abfb-f6930e4f131a
+		summarizeBy: sum
+		sourceColumn: percentage
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dropouts_benchmark = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("TcnLDQAgCATRXvZMjIAfeiH034ZmvXibl8mEQtCbdZQkjHAnnJjvjB+T0IdFRBD7ghGMOg==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [stage_id = _t, percentage = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"stage_id", Int64.Type}, {"percentage", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

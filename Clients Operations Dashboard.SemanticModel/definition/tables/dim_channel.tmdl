@@ -1,0 +1,35 @@
+table dim_channel
+	lineageTag: 6a80a071-7823-4754-b1e0-ba382279d281
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 7fd18892-a3b7-4826-bd2d-9fd9b5695ea4
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column channel
+		dataType: string
+		lineageTag: 5c6d85bc-eb3f-4980-8497-275873a4836e
+		summarizeBy: none
+		sourceColumn: channel
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_channel = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\Documents\Data Analysis\projects\sales v2\powerbi_report_.xlsx"), null, true),
+				    dim_channel_Sheet = Source{[Item="dim_channel",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(dim_channel_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id", Int64.Type}, {"channel", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

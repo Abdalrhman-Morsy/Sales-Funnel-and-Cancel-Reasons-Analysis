@@ -1,0 +1,106 @@
+table snapshot_interaction
+	lineageTag: 3f46f36e-450c-4292-9e61-e818747d1d08
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 582fea79-2002-47b7-893c-7646e12d66f5
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column client_id
+		dataType: int64
+		formatString: 0
+		lineageTag: c6689761-ee8b-447c-83ed-251dbe5964aa
+		summarizeBy: sum
+		sourceColumn: client_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column sales_rep_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 6a0be7db-d6d0-4464-b6d9-c120cf01ba9f
+		summarizeBy: sum
+		sourceColumn: sales_rep_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 1c88affa-eecc-4059-9239-bdda3126466f
+		summarizeBy: sum
+		sourceColumn: project_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column channel_id
+		dataType: int64
+		formatString: 0
+		lineageTag: ad1bc628-230f-4814-a192-d9de74c6acc9
+		summarizeBy: sum
+		sourceColumn: channel_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column stage_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 846bd202-c453-4ab3-bb36-7c63743c1cf8
+		summarizeBy: sum
+		sourceColumn: stage_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column follow_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 52a31a3e-b479-42ea-8a6c-b92a14407ec0
+		summarizeBy: none
+		sourceColumn: follow_date
+
+		variation Variation
+			isDefault
+			relationship: 431e4be0-f2be-4169-af10-46fbeaf551be
+			defaultHierarchy: LocalDateTable_9d48adf8-01cd-44cd-be37-dd7e5b99f76a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column is_synthetic
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 19509332-bfdd-4b71-801f-5f530160da96
+		summarizeBy: none
+		sourceColumn: is_synthetic
+
+		annotation SummarizationSetBy = Automatic
+
+	column no_answer_flag
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b439e77c-2539-41a9-b7d0-32681fc7b4c0
+		summarizeBy: none
+		sourceColumn: no_answer_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	partition snapshot_interaction = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\Documents\Data Analysis\projects\sales v2\powerbi_report_.xlsx"), null, true),
+				    snapshot_interaction_Sheet = Source{[Item="snapshot_interaction",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(snapshot_interaction_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id", Int64.Type}, {"client_id", Int64.Type}, {"sales_rep_id", Int64.Type}, {"project_id", Int64.Type}, {"channel_id", Int64.Type}, {"stage_id", Int64.Type}, {"follow_date", type date}, {"is_synthetic", type logical}, {"no_answer_flag", type logical}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
